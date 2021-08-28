@@ -1,0 +1,45 @@
+{
+    "structs": {
+        "MyStruct": {
+            "fields": {
+                "field0": {
+                    "type": "string",
+                    "json": true,
+                    "tags": {
+                        "gorm": [
+                            "embedded",
+                            "embeddedPrefix:field0_"
+                        ],
+                        "pie": [
+                            "yummy",
+                            "name:cool"
+                        ]
+                    }
+                },
+                "field1": {
+                    "type": "int",
+                    "json": false
+                }
+            }
+        }
+    },
+    "methods": {
+        "showFieldZero": {
+            "returns": [
+                "typeof:MyStruct.field0"
+            ],
+            "ref": {
+                "name": "MyStruct",
+                "mutable": true
+            },
+            "args": {
+                "first": {
+                    "type": "typeof:MyStruct.field1"
+                },
+                "second": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
