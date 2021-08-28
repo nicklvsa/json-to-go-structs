@@ -49,7 +49,7 @@ type ParserDoc struct {
 }
 
 func NewParserDoc(inputPath string) *ParserDoc {
-	outputFileName := fmt.Sprintf("%s.go", strings.TrimSpace(strings.Split(inputPath, ".")[1]))
+	outputFileName := fmt.Sprintf("%s.go", strings.TrimSpace(strings.Split(inputPath, ".")[0]))
 
 	return &ParserDoc{
 		Structs:   make(StructsType),
@@ -168,12 +168,14 @@ func (p *ParserDoc) Parse() error {
 			returns = append(returns, ret.Str())
 		}
 
-		methodStart := fmt.Sprintf(`func (%s %s) %s (%s) %s {}`, string(methodStructure.Ref.Name[0]), refName, method, strings.Join(args, ","), strings.Join(returns, ","))
+		methodStart := fmt.Sprintf(`func (%s %s) %s(%s) %s {}`, string(methodStructure.Ref.Name[0]), refName, method, strings.Join(args, ","), strings.Join(returns, ","))
 		p.outputCode.Contents += methodStart + "\n"
 	}
 
 
-	fmt.Printf("STRUCT: \n\n%s", strings.TrimSpace(p.outputCode.Contents))
+	if err := ioutil.WriteFile(p.outputCode.Name, []byte(p.outputCode.Contents), 0644); err != nil {
+		return err
+	}
 
 	return nil
 }
